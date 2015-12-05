@@ -36,8 +36,14 @@ def getTrainingRes():
         for rec in csv.reader(csvfile, delimiter='	'):
             neutralfiles += rec
 
+    # create a list for filenames of disgust pictures
+    disgustfiles = []
+    with open(defaults.disgust_csv, 'rb') as csvfile:
+        for rec in csv.reader(csvfile, delimiter='	'):
+            disgustfiles += rec
+
     # N x dim matrix to store the vectorized data (aka feature space)       
-    phi = np.zeros((len(smilefiles) + len(neutralfiles), defaults.dim))
+    phi = np.zeros((len(smilefiles) + len(neutralfiles) + len(disgustfiles), defaults.dim))
     # 1 x N vector to store binary labels of the data: 1 for smile and 0 for neutral
     labels = []
 
@@ -51,6 +57,12 @@ def getTrainingRes():
     for idx, filename in enumerate(neutralfiles):
         phi[idx + offset] = vectorize(defaults.smile_imgs + filename)
         labels.append(0)
+
+    # load disgust data
+    offset = idx + 1
+    for idx, filename in enumerate(disgustfiles):
+        phi[idx + offset] = vectorize(defaults.disgust_imgs + filename)
+        labels.append(2)
 
     """
     training the data with logistic regression
