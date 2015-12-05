@@ -14,11 +14,7 @@ import faceDetect
 import picamera
 from time import sleep
 from loadTrainingData import getTrainingRes
-
-
-
-SHOW_PREVIEW=False
-SHOW_RECTANGLES=False
+import defaults
     
 """
 pop up an image showing the mouth with a blue rectangle
@@ -43,8 +39,8 @@ given a jpg image, vectorize the grayscale pixels to
 a (width * height, 1) np array
 it is used to preprocess the data and transform it to feature space
 """   
-def vectorize2(pil_im):
-    size = WIDTH, HEIGHT # (width, height)
+def vectorize(pil_im):
+    size = defaults.WIDTH, defaults.HEIGHT # (width, height)
 
     resized_im = pil_im.resize(size, Image.ANTIALIAS) # resize image
     
@@ -72,7 +68,7 @@ if __name__ == '__main__':
     """
     open webcam and capture images
     """
-    if SHOW_PREVIEW:
+    if defaults.SHOW_PREVIEW:
         cv2.namedWindow("preview")
     camera = picamera.PiCamera() 
     camera.resolution = (320, 240)
@@ -82,7 +78,7 @@ if __name__ == '__main__':
     while True:
         
         frame = getFrame(camera)
-        if SHOW_PREVIEW:
+        if defaults.SHOW_PREVIEW:
             cv2.imshow("preview", frame)
         key = cv2.waitKey(1)
 
@@ -94,12 +90,12 @@ if __name__ == '__main__':
         img = cv.fromarray(frame)
         
         storage = cv.CreateMemStorage()
-        detectedFace = faceDetect.getFaces(img,storage,SHOW_RECTANGLES)
+        detectedFace = faceDetect.getFaces(img,storage,defaults.SHOW_RECTANGLES)
         if detectedFace:
-            mouth = faceDetect.getMouth(img,detectedFace,storage,SHOW_RECTANGLES)
-            detectedEye = faceDetect.getEyes(img,storage,SHOW_RECTANGLES)
-            if SHOW_PREVIEW:
-                cv.ShowImage("preview", img)
+            mouth = faceDetect.getMouth(img,detectedFace,storage,defaults.SHOW_RECTANGLES)
+            detectedEye = faceDetect.getEyes(img,storage,defaults.SHOW_RECTANGLES)
+            #if defaults.SHOW_PREVIEW:
+            #    cv.ShowImage("preview", img)
             if mouth != 2: # did not return error
                     mouthimg = crop(mouth)
                     ##Comprobar rapidesa i min error
@@ -111,13 +107,13 @@ if __name__ == '__main__':
                     
                     #cv.SaveImage("webcam-m.jpg", mouthimg)
                     # predict the captured emotion
-                    result = lr.predict(vectorize2(pil_im))
+                    result = lr.predict(vectorize(pil_im))
                     if result == 1:
                         print "you are smiling! :-) "
                     else:
                         print "you are not smiling :-| "
             else:
-                    print "failed to detect mouth. Try hold your head straight and make sure there is only one face."
+                    print "failed to detect mouth. 1 face only and good posture"
         else:
             print "failed to detect face."
     

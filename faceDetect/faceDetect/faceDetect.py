@@ -5,6 +5,7 @@ output: [[x,y],[width,height]] of the detected mouth area
 from time import sleep
 import cv2.cv as cv
 import cv2
+import defaults
 def showRectangle(imcolor, obj, color):
     cv.Rectangle( imcolor, (obj[0][0],obj[0][1]), (obj[0][0]+obj[0][2],obj[0][1]+obj[0][3]), color)
     cv.NamedWindow('Face Detection', cv.CV_WINDOW_NORMAL)
@@ -16,7 +17,7 @@ def getFaces(imcolor,storage=None,DEBUG=None):
     if not storage:
         storage = cv.CreateMemStorage()
     # loading the classifiers
-    haarFace = cv.Load('haarcascade_frontalface_default.xml')
+    haarFace = cv.Load(defaults.haar_face)
     
     # running the classifiers
     detectedFace = cv.HaarDetectObjects(imcolor, haarFace, storage)
@@ -33,7 +34,7 @@ def getEyes(imcolor,storage=None,DEBUG=None):
         storage = cv.CreateMemStorage()
             
     # loading the classifiers
-    haarEyes = cv.Load('haarcascade_eye.xml')
+    haarEyes = cv.Load(defaults.haar_eye)
 
     # running the classifiers
     detectedEye = cv.HaarDetectObjects(imcolor, haarEyes, storage)
@@ -41,7 +42,7 @@ def getEyes(imcolor,storage=None,DEBUG=None):
     # draw a green rectangle where the face is detected
     if DEBUG and detectedEye:
         for eye in detectedEye:
-            showRectangle(imcolor,eye,cv.RGB(155, 10, 500))
+            showRectangle(imcolor,eye,cv.RGB(155, 10, 110))
 
     return detectedEye
     
@@ -49,7 +50,7 @@ def getMouth(imcolor,detectedFace,storage=None,DEBUG=None):
     if not storage:
         storage = cv.CreateMemStorage()
     # loading the classifiers
-    haarMouth = cv.Load('haarcascade_mouth.xml')    
+    haarMouth = cv.Load(defaults.haar_mouth)    
     # running the classifiers
     detectedMouth = cv.HaarDetectObjects(imcolor, haarMouth, storage)
 
