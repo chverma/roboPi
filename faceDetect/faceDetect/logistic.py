@@ -7,7 +7,7 @@ class Logistic(object):
     """
     def __init__(self, dim,weigths=None):
         self.dim = dim
-        if weigths.any():
+        if weigths!=None:
             self.weights=weigths
         else:
             self.weights = np.random.normal(0, 1, (1, dim)) 

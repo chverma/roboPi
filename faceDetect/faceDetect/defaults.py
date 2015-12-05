@@ -1,7 +1,7 @@
 ##########DEFAULTS
 
 SHOW_PREVIEW=False # To show real time video
-SHOW_RECTANGLES=True # To show preview image with objects detected
+SHOW_RECTANGLES=False # To show preview image with objects detected
 
 WIDTH, HEIGHT = 28, 10 # all mouth images will be resized to the same size
 dim = WIDTH * HEIGHT # dimension of feature vector

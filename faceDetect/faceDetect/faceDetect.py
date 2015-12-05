@@ -93,4 +93,20 @@ def getMouth(imcolor,detectedFace,storage=None,DEBUG=None):
         return maxMouth
     except UnboundLocalError:
         return 2
+        
+def getMouth2(imcolor,detectedFace,storage=None,DEBUG=None):
+    if not storage:
+        storage = cv.CreateMemStorage()
+    # loading the classifiers
+    haarMouth = cv.Load(defaults.haar_mouth)    
+    # running the classifiers
+    detectedMouth = cv.HaarDetectObjects(imcolor, haarMouth, storage)
+    
+    # draw a green rectangle where the face is detected
+    if DEBUG and detectedMouth:
+        for mouth in detectedMouth:
+            showRectangle(imcolor,eye,cv.RGB(155, 10, 110))
+
+    return detectedMouth
+  
 
