@@ -63,8 +63,13 @@ def getFrame(camera):
 
 if __name__ == '__main__':
 
-    #Load training data
-    lr=getTrainingRes()
+    ## Exists weigths
+    if sys.argv[1]=="train":
+        #Load training data
+        lr=getTrainingRes()
+    else:
+        weigths = np.load(defaults.weigths_file)
+        lr = logistic.Logistic(defaults.dim,weigths)
     """
     open webcam and capture images
     """

@@ -16,3 +16,5 @@ smile_imgs = '../data/mouths/neutral/'
 haar_face = '../data/haarcascade/haarcascade_frontalface_default.xml'
 haar_mouth = '../data/haarcascade/haarcascade_mouth.xml'
 haar_eye = '../data/haarcascade/haarcascade_eye.xml'
+
+weigths_file = 'weights.npy'

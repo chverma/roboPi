@@ -1,19 +1,33 @@
 import numpy as np
 from PIL import Image
-
+import defaults
 class Logistic(object):
     """
     randomly initialize weights
     """
-    def __init__(self, dim):
+    def __init__(self, dim,weigths=None):
         self.dim = dim
-        self.weights = np.random.normal(0, 1, (1, dim)) 
-
+        if weigths.any():
+            self.weights=weigths
+        else:
+            self.weights = np.random.normal(0, 1, (1, dim)) 
+    
+    """
+    sig(x)
+    """
+    def sig(x):
+	    return 1.0 / (1.0 + np.exp(-x))
+	    
     """
     evaluate the probability of belonging to class 1
     P(C|phi_n) = sigmoid(w.T * phi_n)
     """
     def evaluate(self,phi_n):
+        """
+        sig(x)
+        """
+        def sig(x):
+	        return 1.0 / (1.0 + np.exp(-x))
         return sig(np.dot(self.weights, phi_n.T))
 
     """
@@ -38,11 +52,13 @@ class Logistic(object):
 
             w_prev = self.weights
             # update weights using gradient descent
-            self.weights = w_prev - (learn_rate * np.array(grad_E)) 
+            self.weights = w_prev - (learn_rate * np.array(grad_E))
+             
             converged = False
             for x in (self.weights - w_prev):
                 for y in x:
                     if abs(y) < 0.0001:
+                        np.save(defaults.weigths_file, self.weights)
                         converged = True
                         break
             if converged:
@@ -58,5 +74,4 @@ class Logistic(object):
     def predict(self,phi_n):
         return int(round(self.evaluate(phi_n)[0]))
 
-def sig(x):
-	return 1.0 / (1.0 + np.exp(-x))
+    
