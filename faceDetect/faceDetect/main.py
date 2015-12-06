@@ -113,10 +113,14 @@ if __name__ == '__main__':
                     #cv.SaveImage("webcam-m.jpg", mouthimg)
                     # predict the captured emotion
                     result = lr.predict(vectorize(pil_im))
-                    if result == 1:
-                        print "you are smiling! :-) "
+                    if result == 0:
+                        print "you are neutral! :-| "
+                    elif result==1:
+                        print "you are smiling :-) "
+                    elif result==2:
+                        print "you are disgust :-$ "
                     else:
-                        print "you are not smiling :-| "
+                        print "upss, I don't know... "
             else:
                     print "failed to detect mouth. 1 face only and good posture"
         else:

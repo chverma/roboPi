@@ -47,16 +47,16 @@ def getTrainingRes():
     # 1 x N vector to store binary labels of the data: 1 for smile and 0 for neutral
     labels = []
 
-    # load smile data
+    # load neutral data
     for idx, filename in enumerate(smilefiles):
         phi[idx] = vectorize(defaults.neutral_imgs + filename)
-        labels.append(1)
+        labels.append(0)
 
-    # load neutral data    
+    # load smile data    
     offset = idx + 1
     for idx, filename in enumerate(neutralfiles):
         phi[idx + offset] = vectorize(defaults.smile_imgs + filename)
-        labels.append(0)
+        labels.append(1)
 
     # load disgust data
     offset = idx + 1
