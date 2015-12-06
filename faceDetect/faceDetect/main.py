@@ -114,9 +114,9 @@ if __name__ == '__main__':
                     # predict the captured emotion
                     result = lr.predict(vectorize(pil_im))
                     if result == 0:
-                        print "you are neutral! :-| "
+                        print "you are smiling! :-) "
                     elif result==1:
-                        print "you are smiling :-) "
+                        print "you are neutral :-| "
                     elif result==2:
                         print "you are disgust :-$ "
                     else:
