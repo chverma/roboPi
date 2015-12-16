@@ -8,13 +8,14 @@ import cv2
 import time
 from PIL import Image
 import numpy as np
-
+import defaults
 import logistic
 import faceDetect
-import picamera
+if defaults.raspberry_plt:
+    import picamera
 from time import sleep
 from loadTrainingData import getTrainingRes
-import defaults
+
     
 """
 pop up an image showing the mouth with a blue rectangle
@@ -49,7 +50,13 @@ def vectorize(pil_im):
     oned_array = im_array.reshape(1, size[0] * size[1])
     
     return oned_array
+def getFrameFromWebCam(cap):
+    ret, frame = cap.read()
+
+    # Our operations on the frame come here
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     
+    return gray
 def getFrame(camera):
 	#Create a memory stream so photos doesn't need to be saved in a file
 	stream = io.BytesIO()
@@ -75,14 +82,22 @@ if __name__ == '__main__':
     """
     if defaults.SHOW_PREVIEW:
         cv2.namedWindow("preview")
-    camera = picamera.PiCamera() 
-    camera.resolution = (320, 240)
-	
-    print "\n\n\n\n\nStarting to get images"
-
+  
+    print "\n--Starting to get images"
+    if defaults.raspberry_plt:
+        cam = picamera.PiCamera() 
+        cam.resolution = (320, 240)
+    else:
+        cam = cv.CaptureFromCAM(0)
+    
     while True:
+        if defaults.raspberry_plt:
+            frame = getFrame(cam)
+            img = cv.fromarray(frame)
+        else:
+            frame = cv.QueryFrame(cam)
+            img=frame
         
-        frame = getFrame(camera)
         if defaults.SHOW_PREVIEW:
             cv2.imshow("preview", frame)
         key = cv2.waitKey(1)
@@ -92,8 +107,8 @@ if __name__ == '__main__':
         #if key == 32 or 1048608 == key: # press space to save images
         #cv.SaveImage("webcam.jpg", cv.fromarray(frame))
         #img = cv.LoadImage("webcam.jpg") # input image
-        img = cv.fromarray(frame)
         
+         
         storage = cv.CreateMemStorage()
         detectedFace = faceDetect.getFaces(img,storage,defaults.SHOW_RECTANGLES)
         if detectedFace:
