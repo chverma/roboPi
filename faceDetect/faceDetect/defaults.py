@@ -1,5 +1,5 @@
 ##########DEFAULTS
-
+raspberry_plt=False
 SHOW_PREVIEW=False # To show real time video
 SHOW_RECTANGLES=True # To show preview image with objects detected
 
@@ -10,8 +10,8 @@ smile_csv   = '../data/csv/smiles.csv'
 neutral_csv = '../data/csv/neutral.csv'
 disgust_csv = '../data/csv/disgust.csv'
 
-neutral_imgs = '../data/mouths/smile/'
-smile_imgs = '../data/mouths/neutral/'
+neutral_imgs = '../data/mouths/neutral/'
+smile_imgs = '../data/mouths/smile/'
 disgust_imgs = '../data/mouths/disgust/'
 
 
